@@ -13,9 +13,27 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return InformacionPersona::limit(10)->get();
+        $name1 = strtolower(str_replace(' ', '', $request->name));
+        $percent = $request->percent;
+        $informaciones_personas = InformacionPersona::where('nombre', 'like', '%meifer%')->get();
+        $data = [];
+        foreach ($informaciones_personas as $persona) {
+            $name2 = strtolower(str_replace(' ', '', $persona->nombre));
+            similar_text($name1, $name2, $similar_percent);
+            $method_lev = levenshtein($name1, $name2);
+            $names_len = (strlen($name1) + strlen($name2));
+            $lev_result = (((($names_len) - $method_lev) * 100) / $names_len);
+            $result_percent = ($similar_percent + $lev_result) / 2;
+            if ($percent >= $result_percent) {
+                $persona->percent = $result_percent;
+                $data[] = $persona;
+            } else {
+                continue;
+            }
+        }
+        return $data;
     }
     // public function index()
     // {
