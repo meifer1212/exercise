@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\InformacionPersona;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -34,7 +32,7 @@ class HomeController extends Controller
             $names_len = (strlen($name1) + strlen($name2));
             $lev_result = (((($names_len) - $method_lev) * 100) / $names_len);
             $result_percent = ($similar_percent + $lev_result) / 2;
-            if ($percent >= $result_percent) {
+            if ($result_percent >= $percent) {
                 $persona->percent = number_format($result_percent, '2', ',', '.');
                 $data[] = $persona;
             } else {

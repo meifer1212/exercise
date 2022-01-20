@@ -14,6 +14,7 @@
                                     class="form-control"
                                     id="name"
                                     placeholder="ej. Alexander"
+                                    title="Escribe el Nombre Completo a Buscar"
                                     required
                                 />
                             </div>
@@ -27,6 +28,7 @@
                                     placeholder="ej. 80"
                                     min="0"
                                     max="100"
+                                    title="Es el porcentaje de coincidencia minimo de los registros a buscar."
                                     required
                                 />
                             </div>
@@ -80,7 +82,7 @@
                                         <tr v-for="result in paginated('results')" :key="result.id">
                                             <td>{{ result.id }}</td>
                                             <td>{{ result.nombre }}</td>
-                                            <td>{{ result.percent }}</td>
+                                            <td>{{ result.percent }}%</td>
                                             <td>{{ result.tipo_persona }}</td>
                                             <td>{{ result.tipo_cargo }}</td>
                                             <td>{{ result.departamento }}</td>

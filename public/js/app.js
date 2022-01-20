@@ -5375,6 +5375,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // mounted() {
   //     console.log('Component mounted.')
@@ -28081,6 +28083,7 @@ var render = function () {
                       type: "text",
                       id: "name",
                       placeholder: "ej. Alexander",
+                      title: "Escribe el Nombre Completo a Buscar",
                       required: "",
                     },
                     domProps: { value: _vm.name },
@@ -28116,6 +28119,8 @@ var render = function () {
                       placeholder: "ej. 80",
                       min: "0",
                       max: "100",
+                      title:
+                        "Es el porcentaje de coincidencia minimo de los registros a buscar.",
                       required: "",
                     },
                     domProps: { value: _vm.percent },
@@ -28244,7 +28249,7 @@ var render = function () {
                                       _c("td", [_vm._v(_vm._s(result.nombre))]),
                                       _vm._v(" "),
                                       _c("td", [
-                                        _vm._v(_vm._s(result.percent)),
+                                        _vm._v(_vm._s(result.percent) + "%"),
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [
