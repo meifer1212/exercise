@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InformacionPersona;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -13,11 +14,17 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function exerciseJSON(Request $request)
     {
+        Cache::flush();
         $name1 = strtolower(str_replace(' ', '', $request->name));
         $percent = $request->percent;
-        $informaciones_personas = InformacionPersona::where('nombre', 'like', '%meifer%')->get();
+        $cache = Cache::get($name1);
+        if (!$cache) {
+            $informaciones_personas = InformacionPersona::all();
+        } else {
+            return $cache;
+        }
         $data = [];
         foreach ($informaciones_personas as $persona) {
             $name2 = strtolower(str_replace(' ', '', $persona->nombre));
@@ -27,22 +34,24 @@ class HomeController extends Controller
             $lev_result = (((($names_len) - $method_lev) * 100) / $names_len);
             $result_percent = ($similar_percent + $lev_result) / 2;
             if ($percent >= $result_percent) {
-                $persona->percent = $result_percent;
+                $persona->percent = number_format($result_percent,'2',',','.');
                 $data[] = $persona;
             } else {
                 continue;
             }
         }
+        Cache::delete($name1);
+        Cache::put($name1, $data, now()->addMinutes(5));
         return $data;
     }
-    // public function index()
-    // {
-    //     return view('index');
-    // }
-    public function exerciseJSON(Request $request)
+    public function index()
     {
-        return InformacionPersona::limit(100)->get();
+        return view('index');
     }
+    // public function exerciseJSON(Request $request)
+    // {
+    //     return InformacionPersona::limit(100)->get();
+    // }
 
     /**
      * Store a newly created resource in storage.
