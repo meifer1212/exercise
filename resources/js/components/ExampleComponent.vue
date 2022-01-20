@@ -75,7 +75,7 @@
                                 <tbody>
                                     <tr v-for="result in results" :key="result.id">
                                         <td>{{ result.id }}</td>
-                                        <td>{{ result.nombre }}</td>
+                                        <td colspan="2">{{ result.nombre }}</td>
                                         <td>{{ result.percent }}</td>
                                         <td>{{ result.tipo_persona }}</td>
                                         <td>{{ result.tipo_cargo }}</td>

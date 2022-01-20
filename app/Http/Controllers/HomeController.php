@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InformacionPersona;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,10 +17,10 @@ class HomeController extends Controller
      */
     public function exerciseJSON(Request $request)
     {
-        Cache::flush();
+        // Cache::flush();
         $name1 = strtolower(str_replace(' ', '', $request->name));
         $percent = $request->percent;
-        $cache = Cache::get($name1);
+        $cache = Cache::get($name1 . $percent);
         if (!$cache) {
             $informaciones_personas = InformacionPersona::all();
         } else {
@@ -34,14 +35,19 @@ class HomeController extends Controller
             $lev_result = (((($names_len) - $method_lev) * 100) / $names_len);
             $result_percent = ($similar_percent + $lev_result) / 2;
             if ($percent >= $result_percent) {
-                $persona->percent = number_format($result_percent,'2',',','.');
+                $persona->percent = number_format($result_percent, '2', ',', '.');
                 $data[] = $persona;
             } else {
                 continue;
             }
         }
         Cache::delete($name1);
-        Cache::put($name1, $data, now()->addMinutes(5));
+        $temp = [];
+        foreach ($data as $key => $row) {
+            $temp[$key] = $row['percent'];
+        }
+        array_multisort($temp, SORT_DESC, $data);
+        Cache::put($name1 . $percent, $data, now()->addMinutes(5));
         return $data;
     }
     public function index()
@@ -54,7 +60,7 @@ class HomeController extends Controller
     // }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storpercent.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -76,7 +82,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storpercent.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -88,7 +94,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storpercent.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

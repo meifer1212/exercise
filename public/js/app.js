@@ -28175,7 +28175,9 @@ var render = function () {
                             return _c("tr", { key: result.id }, [
                               _c("td", [_vm._v(_vm._s(result.id))]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(result.nombre))]),
+                              _c("td", { attrs: { colspan: "2" } }, [
+                                _vm._v(_vm._s(result.nombre)),
+                              ]),
                               _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(result.percent))]),
                               _vm._v(" "),
